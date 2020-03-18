@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="z-index: 100">
         <router-link class="navbar-brand" to="/">
             <img src="../../assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
             Hunting World
@@ -13,15 +13,21 @@
                     <router-link class="nav-link" to="/">Home</router-link>
                 </li>
                 <li class="nav-item">
+                    <router-link class="nav-link" to="/news">News</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" to="/download">Download</router-link>
+                </li>
+                <li class="nav-item">
                     <router-link class="nav-link" to="/about">About</router-link>
                 </li>
             </ul>
             <ul class="navbar-nav form-inline my-2 my-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="#login">Login</a>
+                    <router-link class="nav-link" to="/login">Login</router-link>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#register">Register</a>
+                    <router-link class="nav-link" to="/register">Register</router-link>
                 </li>
 
                 <li id="profile" class="nav-item dropleft">
