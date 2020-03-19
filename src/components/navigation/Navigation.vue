@@ -23,23 +23,21 @@
                 </li>
             </ul>
             <ul class="navbar-nav form-inline my-2 my-lg-0">
-                <li class="nav-item">
+                <li v-if="!user.username" class="nav-item">
                     <router-link class="nav-link" to="/login">Login</router-link>
                 </li>
-                <li class="nav-item">
+                <li v-if="!user.username" class="nav-item">
                     <router-link class="nav-link" to="/register">Register</router-link>
                 </li>
 
-                <li id="profile" class="nav-item dropleft">
+                <li v-if="user.username" id="profile" class="nav-item dropleft">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Test
+                        {{user.username}}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="nav-link" href="#profile">Profile</a>
+                        <a class="" href="#profile">Profile</a>
                         <div class="dropdown-divider"></div>
-                        <a class="nav-link" href="#logout"
-                           onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                        <a class="" @click="logout">
                             Logout
                         </a>
 
@@ -55,7 +53,23 @@
 
 <script>
     export default {
-        name: "navigation"
+        name: "navigation",
+        props: ['user'],
+        data() {
+            return {
+
+            }
+        },
+        mounted() {
+
+        },
+        methods: {
+            logout() {
+                delete localStorage.username;
+                this.$emit('logout');
+                this.$cookies.remove('session');
+            },
+        },
     }
 </script>
 

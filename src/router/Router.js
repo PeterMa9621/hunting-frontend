@@ -8,13 +8,13 @@ import ForgotPasswordPage from "../pages/AccountPage/ForgotPasswordPage";
 import RegisterPage from "../pages/AccountPage/RegisterPage";
 
 const routes = [
-    { path: '/about', component: AboutPage },
-    { path: '/', component: HomePage },
-    { path: '/news', component: NewsPage },
-    { path: '/download', component: DownloadPage },
-    { path: '/login', component: LoginPage },
-    { path: '/forgot-password', component: ForgotPasswordPage },
-    { path: '/register', component: RegisterPage },
+    { path: '/about', component: AboutPage, name: 'about' },
+    { path: '/', component: HomePage, name: 'home' },
+    { path: '/news', component: NewsPage, name: 'news' },
+    { path: '/download', component: DownloadPage, name: 'download' },
+    { path: '/login', component: LoginPage, name: 'login' },
+    { path: '/forgot-password', component: ForgotPasswordPage, name: 'forgot-password' },
+    { path: '/register', component: RegisterPage, name: 'register' },
 ];
 
 const router = new VueRouter({

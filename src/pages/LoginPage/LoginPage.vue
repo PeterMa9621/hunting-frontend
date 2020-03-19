@@ -2,38 +2,80 @@
     This part of login window references https://bootsnipp.com/snippets/dldxB
 -->
 <template>
-    <div class="wrapper fadeInDown">
-        <div id="formContent">
-            <!-- Tabs Titles -->
+    <div>
+        <div class="wrapper fadeInDown">
+            <div id="formContent">
+                <!-- Tabs Titles -->
 
-            <!-- Icon -->
-            <div class="fadeIn first">
-                <img :src="require('@/assets/logo.png')" id="icon" alt="User Icon" />
-            </div>
-
-            <!-- Login Form -->
-            <form>
-                <input type="text" id="login" class="fadeIn second" name="login" placeholder="username">
-                <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
-                <input type="submit" class="fadeIn fourth" value="Log In">
-            </form>
-
-            <!-- Remind Passowrd -->
-            <div id="formFooter">
-                <div class="form-inline justify-content-between">
-                    <router-link class="underlineHover" to="/forgot-password">Forgot Password?</router-link>
-                    <router-link class="underlineHover" to="/register">Create Account</router-link>
+                <!-- Icon -->
+                <div class="fadeIn first">
+                    <img :src="require('@/assets/logo.png')" id="icon" alt="User Icon" />
                 </div>
 
+                <!-- Login Form -->
+                <div>
+                    <input type="text" id="login" class="fadeIn second" v-model="username" placeholder="Username">
+                    <input type="password" id="password" class="fadeIn third" v-model="password" placeholder="Password">
+                    <span v-if="errorMsg">{{errorMsg}}</span>
+                    <input type="submit" class="fadeIn fourth" value="Log In" @click="login()">
+                </div>
+
+                <!-- Remind Passowrd -->
+                <div id="formFooter">
+                    <div class="form-inline justify-content-between">
+                        <router-link class="underlineHover" to="/forgot-password">Forgot Password?</router-link>
+                        <router-link class="underlineHover" to="/register">Create Account</router-link>
+                    </div>
+
+                </div>
             </div>
 
         </div>
+        <modal v-if="showModal" @modalFinished="onModalFinish"></modal>
     </div>
 </template>
 
 <script>
+    import Modal from "../../components/modal/Modal";
+    import UserService from "../../services/UserService";
     export default {
         name: "LoginPage",
+        components: {
+            Modal
+        },
+        data() {
+            return {
+                showModal: false,
+                username: '',
+                password: '',
+                errorMsg: ''
+            }
+        },
+        methods: {
+            show() {
+                this.showModal = true;
+            },
+            onModalFinish() {
+                this.showModal = false;
+                console.log("Modal finished");
+            },
+            login() {
+                console.log('username', this.username);
+                UserService.login(this.username, this.password).then((response) => {
+                    const user = response[0];
+                    // console.log(user);
+                    // Set session id into cookies
+                    this.$cookies.set('session', user.session, '1d');
+                    localStorage['username'] = user.username;
+                    // Let parent's element to notice the user has login
+                    this.$emit('login');
+                    // Redirect to news page
+                    this.$router.push('news');
+                }).catch((error) => {
+                    this.errorMsg = error.response.data;
+                });
+            }
+        }
     }
 </script>
 
@@ -154,7 +196,7 @@
         transform: scale(0.95);
     }
 
-    input[type=text] {
+    input[type=text], input[type=password] {
         background-color: #f6f6f6;
         color: #0d0d0d;
         padding: 15px 32px;

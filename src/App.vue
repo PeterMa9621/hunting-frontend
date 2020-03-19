@@ -1,9 +1,16 @@
 <template>
   <div id="app">
-    <navigation></navigation>
+    <navigation :user="user" @logout="onLogout"></navigation>
 
-    <router-view></router-view>
-    <!-- <UserListView class="mt-2" msg="Welcome to Your Vue.js App"/> -->
+    <router-view @login="onLogin"></router-view>
+
+    <footer>
+      <div class="container">
+        <div class="row justify-content-center">
+          <small class="d-block mt-5 mb-3 text-muted">© Copyright 2019-2020, Peter</small>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -14,6 +21,21 @@
     name: 'App',
     components: {
       Navigation
+    },
+    data() {
+      return {
+        user: {
+          username: ''
+        }
+      }
+    },
+    methods: {
+      onLogin() {
+        this.user.username = localStorage['username'];
+      },
+      onLogout() {
+        this.user.username = '';
+      }
     }
   }
 </script>
