@@ -21,7 +21,7 @@
             <div class="col-md-6 col-sm-12 col-xs-12">
                 <div class="row justify-content-center mt-5">
                     <div class="polaroid">
-                        <img src="https://photolemur.com/img/home/top-slider/after-1440.jpg" width="100%" alt="">
+                        <img src="../../assets/img/home-banner.jpg" width="100%" alt="">
                     </div>
                 </div>
             </div>

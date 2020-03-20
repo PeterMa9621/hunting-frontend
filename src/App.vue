@@ -38,9 +38,13 @@
       }
     },
     mounted() {
-      const sessionId = this.$cookies.get('session');
-      if(sessionId!=null){
-        console.log('Have session');
+
+    },
+    created() {
+      const username = localStorage['username'];
+      if(username!=null){
+        // Set the username first, then check if it is available
+        this.user.username = localStorage['username'];
       }
     }
   }

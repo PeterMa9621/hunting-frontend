@@ -34,6 +34,9 @@ class UserService {
     }
 
     static login(username, password){
+        console.log("Login start");
+        const startTime = new Date();
+
         return new Promise((resolve, reject) => {
             axios.post(url + 'login/', {
                 username: username,
@@ -41,9 +44,27 @@ class UserService {
             }).then((response) => {
                 const data = response.data;
                 resolve(data);
+
+                const endTime = new Date();
+                console.log("Finish login request");
+                console.log("Time used", Math.abs(startTime - endTime));
             }).catch(reason => {
                 reject(reason);
             });
+        });
+    }
+
+    static checkAuth(session, username){
+        return new Promise((resolve, reject) => {
+            axios.post(url + 'auth/', {
+                session: session,
+                username: username
+            }).then((response) => {
+                console.log(response);
+                resolve(response.data);
+            }).catch((error) => {
+                reject(error);
+            })
         });
     }
 

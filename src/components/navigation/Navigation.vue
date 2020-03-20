@@ -34,12 +34,12 @@
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{user.username}}
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="" href="#profile">Profile</a>
+                    <div class="dropdown-menu justify-content-center" aria-labelledby="navbarDropdown">
+                        <router-link class="btn btn-link" to="/profile">Profile</router-link>
                         <div class="dropdown-divider"></div>
-                        <a class="" @click="logout">
+                        <button class="btn btn-link" @click="logout">
                             Logout
-                        </a>
+                        </button>
 
                         <form id="logout-form" action="logout" method="POST" style="display: none;">
                         </form>
@@ -52,6 +52,8 @@
 </template>
 
 <script>
+    import UserService from "../../services/UserService";
+
     export default {
         name: "navigation",
         props: ['user'],
@@ -60,7 +62,22 @@
 
             }
         },
-        mounted() {
+        created() {
+            const sessionId = this.$cookies.get('session');
+            const username = localStorage['username'];
+            if(sessionId!=null && username!=null){
+                console.log('Have session:', sessionId, ", username:", username);
+                UserService.checkAuth(sessionId, username).then((response) => {
+                    const user = response[0];
+                    console.log('Auth passed!');
+                    this.user.username = localStorage['username'] = user.username;
+                }).catch((error) => {
+                    this.user.username = '';
+                    delete localStorage['username'];
+                    this.$cookies.remove('session');
+                    console.log(error.data)
+                });
+            }
 
         },
         methods: {
