@@ -36,6 +36,12 @@
       onLogout() {
         this.user.username = '';
       }
+    },
+    mounted() {
+      const sessionId = this.$cookies.get('session');
+      if(sessionId!=null){
+        console.log('Have session');
+      }
     }
   }
 </script>
