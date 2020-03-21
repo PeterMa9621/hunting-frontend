@@ -6,6 +6,7 @@ import DownloadPage from "../pages/DownloadPage/DownloadPage";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import ForgotPasswordPage from "../pages/AccountPage/ForgotPasswordPage";
 import RegisterPage from "../pages/AccountPage/RegisterPage";
+import ProfilePage from "../pages/AccountPage/ProfilePage";
 
 const routes = [
     { path: '/about', component: AboutPage, name: 'about' },
@@ -15,6 +16,7 @@ const routes = [
     { path: '/login', component: LoginPage, name: 'login' },
     { path: '/forgot-password', component: ForgotPasswordPage, name: 'forgot-password' },
     { path: '/register', component: RegisterPage, name: 'register' },
+    { path: '/profile', component: ProfilePage, name: 'profile' },
 ];
 
 const router = new VueRouter({

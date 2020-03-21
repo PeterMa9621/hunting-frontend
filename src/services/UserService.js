@@ -60,7 +60,6 @@ class UserService {
                 session: session,
                 username: username
             }).then((response) => {
-                console.log(response);
                 resolve(response.data);
             }).catch((error) => {
                 reject(error);
