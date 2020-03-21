@@ -14,7 +14,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <router-link to="/download" class="btn btn-outline-light mt-5" style="color: wheat">Download Game</router-link>
+                        <router-link :to="{name:'download'}" class="btn btn-outline-light mt-5" style="color: wheat">Download Game</router-link>
                     </div>
                 </div>
             </div>
@@ -114,8 +114,8 @@
 
     div.page-split {
         background-color: #343a40;
-        height: 180px;
-        transform: skewY(-5deg) translateY(-100px);
+        height: 20vh;
+        transform: skewY(-5deg) translateY(-10vh);
         z-index: 0;
     }
 </style>

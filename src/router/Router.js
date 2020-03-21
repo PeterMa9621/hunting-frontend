@@ -8,6 +8,10 @@ import ForgotPasswordPage from "../pages/AccountPage/ForgotPasswordPage";
 import RegisterPage from "../pages/AccountPage/RegisterPage";
 import ProfilePage from "../pages/AccountPage/ProfilePage";
 
+import auth from "../middleware/Auth/auth";
+import log from "../middleware/Auth/log";
+import EditProfilePage from "../pages/AccountPage/EditProfilePage";
+
 const routes = [
     { path: '/about', component: AboutPage, name: 'about' },
     { path: '/', component: HomePage, name: 'home' },
@@ -16,13 +20,47 @@ const routes = [
     { path: '/login', component: LoginPage, name: 'login' },
     { path: '/forgot-password', component: ForgotPasswordPage, name: 'forgot-password' },
     { path: '/register', component: RegisterPage, name: 'register' },
-    { path: '/profile', component: ProfilePage, name: 'profile' },
+    { path: '/profile', component: ProfilePage, name: 'profile', meta:{ middleware: [log, auth] } },
+    { path: '/profile/edit', component: EditProfilePage, name: 'edit-profile', meta:{ middleware: [log, auth] } },
 ];
 
 const router = new VueRouter({
     mode: 'history',
     hash: false,
-    routes: routes
+    routes: routes,
+});
+
+function nextFactory(context, middleware, index) {
+    const subsequentMiddleware = middleware[index];
+
+    if(!subsequentMiddleware){
+        return context.next;
+    }
+
+    return (...parameters) => {
+        context.next(...parameters);
+        const nextMiddleware = nextFactory(context, middleware, index+1);
+        subsequentMiddleware({...context, next: nextMiddleware});
+    }
+}
+
+router.beforeEach((to, from, next) => {
+    if(to.meta.middleware){
+        const middleware = Array.isArray(to.meta.middleware) ? to.meta.middleware : [to.meta.middleware];
+
+        const context = {
+            from,
+            next,
+            router,
+            to,
+        };
+
+        const nextMiddleware = nextFactory(context, middleware, 1);
+
+        return middleware[0]({...context, next: nextMiddleware});
+    }
+
+    return next();
 });
 
 export default router;

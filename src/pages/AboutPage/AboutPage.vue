@@ -56,7 +56,7 @@
     }
     div.page-split {
         background-color: white;
-        height: 180px;
-        transform: skewY(-5deg) translateY(100px);
+        height: 20vh;
+        transform: skewY(-5deg) translateY(10vh);
     }
 </style>

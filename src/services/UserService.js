@@ -77,6 +77,17 @@ class UserService {
             });
         });
     }
+
+    static updateUser(username, doc){
+        return new Promise((resolve, reject) => {
+            axios.put(url + username, doc).then((response) => {
+                const data = response.data;
+                resolve(data);
+            }).catch(reason => {
+                reject(reason);
+            });
+        });
+    }
 }
 
 export default UserService;

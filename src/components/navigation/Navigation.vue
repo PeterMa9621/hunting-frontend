@@ -10,24 +10,24 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <router-link class="nav-link" to="/">Home</router-link>
+                    <router-link class="nav-link" :to="{name:'home'}">Home</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link" to="/news">News</router-link>
+                    <router-link class="nav-link" :to="{name:'news'}">News</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link" to="/download">Download</router-link>
+                    <router-link class="nav-link" :to="{name:'download'}">Download</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link" to="/about">About</router-link>
+                    <router-link class="nav-link" :to="{name:'about'}">About</router-link>
                 </li>
             </ul>
             <ul class="navbar-nav form-inline my-2 my-lg-0">
                 <li v-if="!user.username" class="nav-item">
-                    <router-link class="nav-link" to="/login">Login</router-link>
+                    <router-link class="nav-link" :to="{name:'login'}">Login</router-link>
                 </li>
                 <li v-if="!user.username" class="nav-item">
-                    <router-link class="nav-link" to="/register">Register</router-link>
+                    <router-link class="nav-link" :to="{name:'register'}">Register</router-link>
                 </li>
 
                 <li v-if="user.username" id="profile" class="nav-item dropleft">
@@ -35,14 +35,14 @@
                         {{user.username}}
                     </a>
                     <div class="dropdown-menu justify-content-center" aria-labelledby="navbarDropdown">
-                        <router-link class="btn btn-link" to="/profile">Profile</router-link>
-                        <div class="dropdown-divider"></div>
-                        <button class="btn btn-link" @click="logout">
-                            Logout
-                        </button>
+                        <div class="row justify-content-center">
+                            <router-link class="btn btn-link" :to="{name:'profile'}">Profile</router-link>
+                        </div>
 
-                        <form id="logout-form" action="logout" method="POST" style="display: none;">
-                        </form>
+                        <div class="dropdown-divider"></div>
+                        <div class="row justify-content-center">
+                            <button class="btn btn-link" @click="logout">Logout</button>
+                        </div>
                     </div>
                 </li>
 
@@ -77,6 +77,10 @@
                     this.$cookies.remove('session');
                     console.log(error.data)
                 });
+            } else {
+                this.user.username = '';
+                delete localStorage['username'];
+                this.$cookies.remove('session');
             }
 
         },
@@ -85,6 +89,7 @@
                 delete localStorage.username;
                 this.$emit('logout');
                 this.$cookies.remove('session');
+                this.$router.push({name:'login'});
             },
         },
     }

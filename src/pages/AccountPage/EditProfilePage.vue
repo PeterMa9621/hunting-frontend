@@ -12,17 +12,11 @@
                         </div>
                         <div class="col-md-8">
                             <div class="form-group">
-                                <div class="row justify-content-end">
-                                    <router-link class="btn btn-outline-dark mr-3" :to="{name:'edit-profile'}">Edit Profile</router-link>
-                                </div>
                             </div>
 
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item active">
                                     <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Profile</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="game-tab" data-toggle="tab" href="#game" role="tab" aria-controls="game" aria-selected="false">Game</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="myTabContent">
@@ -33,7 +27,7 @@
                                                 <h5>Email</h5>
                                             </div>
                                             <div class="col-6">
-                                                <p class="text-left">{{ user.email }}</p>
+                                                <input class="text-left form-control" v-model="user.email">
                                             </div>
                                         </div>
                                         <div class="row mt-3">
@@ -44,25 +38,13 @@
                                                 <p class="text-left">{{ user.created_at }}</p>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="game" role="tabpanel" aria-labelledby="game-tab">
-                                    <div class="card card-body" style="border: none">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <h5>Game Server</h5>
-                                            </div>
-                                            <div class="col-6">
-                                                <p class="text-left">None</p>
+                                        <div class="row justify-content-center">
+                                            <div class="form-group">
+                                                <span style="color: green">{{ notification }}</span>
                                             </div>
                                         </div>
-                                        <div class="row mt-3">
-                                            <div class="col-6">
-                                                <h5>Gold Balance</h5>
-                                            </div>
-                                            <div class="col-6">
-                                                <p class="text-left">0</p>
-                                            </div>
+                                        <div class="row justify-content-center">
+                                            <button class="btn btn-outline-primary" @click="edit">Edit</button>
                                         </div>
                                     </div>
                                 </div>
@@ -86,7 +68,8 @@
         name: "profile-page",
         data() {
             return {
-                user: []
+                user: [],
+                notification: ''
             }
         },
         methods: {
@@ -96,6 +79,16 @@
                     this.user.created_at = moment(this.user.created_at).format('MM/DD/YYYY hh:mm');
                 }).catch(() => {
                     this.$router.push('login');
+                });
+            },
+            edit() {
+                UserService.updateUser(this.user.username, { email: this.user.email }).then(() => {
+                    this.notification = 'Succeed to update your profile!';
+                    setTimeout(() => {
+                        this.$router.push({ name:'profile'});
+                    }, 1000);
+                }).catch((reason) => {
+                    this.notification = reason.error;
                 });
             }
         },
@@ -127,13 +120,13 @@
         height: 30vh;
         width: 100%;
         z-index: -1;
-        transform: skewY(2deg) translateY(-10vh);
+        transform: skewY(5deg) translateY(-10vh);
         background-color: #343a40;
     }
 
     div.profile-card {
         position: relative;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
         border-radius:0.5rem;
     }
 </style>

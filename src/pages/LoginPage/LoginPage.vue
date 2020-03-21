@@ -70,10 +70,16 @@
                     // Let parent's element to notice the user has login
                     this.$emit('login');
                     // Redirect to news page
-                    this.$router.push('news');
+                    this.$router.push(this.$route.query.next ? this.$route.query.next : 'news');
                 }).catch((error) => {
                     this.errorMsg = error.response.data;
                 });
+            }
+        },
+        mounted(){
+            // If user has already login, then redirect to home page
+            if(localStorage['username'] && this.$cookies.get('session')){
+                this.$router.push({name:'home'});
             }
         }
     }
