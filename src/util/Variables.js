@@ -10,4 +10,4 @@ class GlobalVariable {
     }
 }
 
- export default GlobalVariable;
+ export var loginUser;

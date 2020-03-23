@@ -14,6 +14,7 @@ import admin from "../middleware/Auth/admin";
 import EditProfilePage from "../pages/AccountPage/EditProfilePage";
 import NewsDetailPage from "../pages/NewsPage/NewsDetailPage";
 import AddNewsPage from "../pages/NewsPage/AddNewsPage";
+import EditNewsPage from "../pages/NewsPage/EditNewsPage";
 
 
 const routes = [
@@ -21,6 +22,7 @@ const routes = [
     { path: '/', component: HomePage, name: 'home' },
     { path: '/news', component: NewsPage, name: 'news' },
     { path: '/news/add', component: AddNewsPage, name: 'add-news', meta:{ middleware: [admin] } },
+    { path: '/news/:id/edit', component: EditNewsPage, name: 'edit-news', meta:{ middleware: [admin] } },
     { path: '/news/:id', component: NewsDetailPage, name: 'news-detail' },
     { path: '/download', component: DownloadPage, name: 'download' },
     { path: '/login', component: LoginPage, name: 'login' },

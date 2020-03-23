@@ -76,10 +76,10 @@
                 UserService.checkAuth(sessionId, username).then((response) => {
                     const user = response[0];
                     console.log('Auth passed!');
-                    this.user.username = localStorage['username'] = user.username;
-
+                    localStorage['username'] = user.username;
+                    this.user =  user;
                 }).catch((error) => {
-                    this.user.username = '';
+                    this.user = {};
                     delete localStorage['username'];
                     this.$cookies.remove('session');
                     console.log(error.data)

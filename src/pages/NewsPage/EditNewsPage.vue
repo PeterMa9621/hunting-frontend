@@ -12,14 +12,15 @@
                             </label>
                             <label class="text-left">
                                 Content
-                                <textarea rows="20" class="form-control" v-model="news.content"></textarea>
+                                <textarea rows="20" class="form-control editor-content" v-model="news.content"></textarea>
                             </label>
+
                             <label class="text-left">
                                 Category
                                 <input class="form-control" v-model="news.category">
                             </label>
-                            <button class="btn btn-outline-primary" @click="addNews">
-                                Post
+                            <button class="btn btn-outline-info" @click="editNews">
+                                Edit
                             </button>
                         </div>
                     </div>
@@ -43,7 +44,7 @@
     import News from "../../model/News";
 
     export default {
-        name: "add-news-page",
+        name: "edit-news-page",
         data() {
             return {
                 news: new News({})
@@ -53,23 +54,33 @@
             MarkdownItVue
         },
         methods: {
-            addNews() {
-                UserService.checkAuth(this.$cookies.get('session'), localStorage.getItem('username')).then(response => {
-                    NewsService.addNews({
+            editNews() {
+                const newsId = this.$route.params.id;
+                UserService.checkAuth(this.$cookies.get('session'), localStorage.getItem('username')).then(() => {
+                    NewsService.updateNews(newsId, {
                         title: this.news.title,
                         content: this.news.content,
-                        category: this.news.category,
-                        author: response[0].username
+                        category: this.news.category
                     }).then(() => {
-                        this.$router.push({name:'news'});
+                        this.$router.push({name:'news-detail', params: {id: newsId}});
                     }).catch((error) => {
+                        alert(error.error);
                         console.log(error);
                     });
                 }).catch((error) => {
                     alert(error);
                 });
-
+            },
+            getNews(id) {
+                NewsService.getNews(id).then((response) => {
+                    this.news = response[0];
+                }).catch((error) => {
+                    console.log(error);
+                });
             }
+        },
+        created() {
+            this.getNews(this.$route.params.id);
         }
     }
 </script>
@@ -81,6 +92,11 @@
         box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.21);
         -webkit-border-radius: 10px 10px 10px 10px;
         border-radius: 10px 10px 10px 10px;
+        overflow: auto;
+    }
+
+    textarea.editor-content {
+        resize: none;
     }
 
     div.markdown {

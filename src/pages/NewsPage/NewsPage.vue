@@ -29,7 +29,6 @@
 
 <script>
     import NewsSlide from "../../components/slide/NewsSlide";
-    import NewsService from "../../services/NewsService";
     import NewsListView from "../../components/listview/NewsListView";
 
     export default {
@@ -41,21 +40,7 @@
             NewsListView,
             NewsSlide,
         },
-        data() {
-            return {
-                news: []
-            }
-        },
-        methods: {
-            getNews() {
-                NewsService.getNews().then((response) => {
-                    this.news = response;
-                });
-            }
-        },
-        created() {
-            this.getNews();
-        }
+
     }
 </script>
 

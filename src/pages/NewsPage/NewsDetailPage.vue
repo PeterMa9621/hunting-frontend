@@ -29,6 +29,7 @@
 <script>
     import NewsService from "../../services/NewsService";
     import MarkdownItVue from 'markdown-it-vue'
+    import News from "../../model/News";
 
     export default {
         name: "news-detail-page",
@@ -37,9 +38,7 @@
         },
         data() {
             return {
-                news: {
-                    content: ''
-                }
+                news: new News({})
             }
         },
         methods: {

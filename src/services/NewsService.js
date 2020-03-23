@@ -1,4 +1,5 @@
 import axios from 'axios';
+import News from '../model/News'
 
 const url = 'http://127.0.0.1:8000/api/news/';
 
@@ -10,14 +11,16 @@ class NewsService {
         return new Promise((resolve, reject) => {
             axios.get(newsUrl).then((response) => {
                 const data = response.data;
-
-                resolve(data.map(news => ({
+                console.log(data);
+                const news = data.map(news => (new News({
                     ...news,
                     created_at: new Date(news.created_at).toLocaleString(),
                     updated_at: new Date(news.updated_at).toLocaleString()
                 })));
-            }).catch(reason => {
-                reject(reason);
+
+                resolve(news);
+            }).catch(error => {
+                reject(error);
             });
         });
     }
@@ -27,9 +30,20 @@ class NewsService {
             axios.post(url, doc).then((response) => {
                 const data = response.data;
                 resolve(data);
-            }).catch(reason => {
-                reject(reason);
+            }).catch(error => {
+                reject(error);
             });
+        })
+    }
+
+    static updateNews(id, doc){
+        return new Promise((resolve, reject) => {
+            axios.put(url + id, doc).then((response) => {
+                const data = response.data;
+                resolve(data);
+            }).catch((error) => {
+                reject(error);
+            })
         })
     }
 }

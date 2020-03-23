@@ -3,7 +3,7 @@
         <div class="card-header">News</div>
         <div class="card-body">
             <div class="list-group" v-if="news.length > 0">
-                <router-link :to="{name: 'news-detail', params: {id: each_new.id}}" v-for="each_new in news" :key="each_new.id"
+                <router-link v-for="each_new in news" :key="each_new.id" :to="{name: 'news-detail', params: {id: each_new.id}}"
                              class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="row">
                         <div class="col-2 my-auto">
@@ -33,10 +33,25 @@
 </template>
 
 <script>
+    import NewsService from "../../services/NewsService";
+
     export default {
         name: "news-list-view",
-        props: ['news'],
+        data() {
+            return {
+                news: []
+            }
+        },
         methods: {
+            getNews() {
+                NewsService.getNews().then((response) => {
+                    this.news = response;
+                });
+            }
+        },
+        created() {
+            this.getNews();
+            console.log(this.news);
         }
     }
 </script>
