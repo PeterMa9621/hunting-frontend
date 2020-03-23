@@ -16,7 +16,7 @@
                 <div>
                     <input type="text" id="login" class="fadeIn second" v-model="username" placeholder="Username">
                     <input type="password" id="password" class="fadeIn third" v-model="password" placeholder="Password">
-                    <span v-if="errorMsg">{{errorMsg}}</span>
+                    <span v-if="errorMsg" style="color: darkred">{{errorMsg}}</span>
                     <input type="submit" class="fadeIn fourth" value="Log In" @click="login()">
                 </div>
 
@@ -38,6 +38,7 @@
 <script>
     import Modal from "../../components/modal/Modal";
     import UserService from "../../services/UserService";
+
     export default {
         name: "LoginPage",
         components: {
@@ -67,8 +68,9 @@
                     // Set session id into cookies
                     this.$cookies.set('session', user.session, '1d');
                     localStorage['username'] = user.username;
-                    // Let parent's element to notice the user has login
-                    this.$emit('login');
+
+                    // Let navigation know the user has login
+                    this.$root.$emit('onLogin', user);
                     // Redirect to news page
                     this.$router.push(this.$route.query.next ? this.$route.query.next : 'news');
                 }).catch((error) => {

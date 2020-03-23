@@ -2,26 +2,28 @@
     <div class="card mt-2 news-list-view">
         <div class="card-header">News</div>
         <div class="card-body">
-            <div v-if="news.length>0" >
-                <div class="card card-body" v-for="each_new in news" :key="each_new.id">
+            <div class="list-group" v-if="news.length > 0">
+                <router-link :to="{name: 'news-detail', params: {id: each_new.id}}" v-for="each_new in news" :key="each_new.id"
+                             class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="row">
                         <div class="col-2 my-auto">
-                            <img src="https://photolemur.com/img/home/top-slider/after-1440.jpg" width="100%" alt="Avatar">
+                            <img :src="require('@/assets/img/home-banner.jpg')" width="100%" alt="Avatar">
                         </div>
                         <div class="col-10">
-                            <div class="row justify-content-between">
-                                <small>{{ each_new.title }}</small>
-                                <small>{{ each_new.created_at }}</small>
+                            <div class="row">
+                                <h4>{{ each_new.title }}</h4>
                             </div>
                             <div class="row">
-                                {{ each_new.content }}
+                                <span class="badge badge-primary">{{ each_new.category }}</span>
                             </div>
-                            <div class="row justify-content-between">
+                            <div class="row justify-content-between mt-3">
                                 <small>Author: {{ each_new.author }}</small>
+                                <small>{{ each_new.created_at }}</small>
                             </div>
                         </div>
                     </div>
-                </div>
+                </router-link>
+
             </div>
             <div v-else>
                 <div class="card card-body">No news</div>
@@ -33,7 +35,9 @@
 <script>
     export default {
         name: "news-list-view",
-        props: ['news']
+        props: ['news'],
+        methods: {
+        }
     }
 </script>
 

@@ -95,7 +95,7 @@
                     this.user = response[0];
                     this.user.created_at = moment(this.user.created_at).format('MM/DD/YYYY hh:mm');
                 }).catch(() => {
-                    this.$router.push('login');
+                    this.$root.$emit('onLogout');
                 });
             }
         },

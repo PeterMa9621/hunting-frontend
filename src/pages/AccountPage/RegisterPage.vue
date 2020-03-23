@@ -17,10 +17,10 @@
                                     <input class="form-control" id="username" placeholder="Username" v-model="username">
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" id="password" placeholder="Password" v-model="password">
+                                    <input class="form-control" type="password" id="password" placeholder="Password" v-model="password">
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" id="confirm-password" placeholder="Confirm Password" v-model="confirmPassword">
+                                    <input class="form-control" type="password" id="confirm-password" placeholder="Confirm Password" v-model="confirmPassword">
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" id="email" placeholder="Email" v-model="email">

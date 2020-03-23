@@ -29,7 +29,9 @@
                 <li v-if="!user.username" class="nav-item">
                     <router-link class="nav-link" :to="{name:'register'}">Register</router-link>
                 </li>
-
+                <li v-if="user.username && user.is_admin===1" class="nav-item">
+                    <router-link class="nav-link" :to="{name:'add-news'}">Post News</router-link>
+                </li>
                 <li v-if="user.username" id="profile" class="nav-item dropleft">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{user.username}}
@@ -45,7 +47,6 @@
                         </div>
                     </div>
                 </li>
-
             </ul>
         </div>
     </nav>
@@ -56,21 +57,27 @@
 
     export default {
         name: "navigation",
-        props: ['user'],
         data() {
             return {
-
+                user: {
+                    username: '',
+                    is_admin: 0
+                }
             }
         },
         created() {
             const sessionId = this.$cookies.get('session');
             const username = localStorage['username'];
+            // Check if the user have both username and session id
             if(sessionId!=null && username!=null){
+                this.user.username = username;
                 console.log('Have session:', sessionId, ", username:", username);
+                // Check from server
                 UserService.checkAuth(sessionId, username).then((response) => {
                     const user = response[0];
                     console.log('Auth passed!');
                     this.user.username = localStorage['username'] = user.username;
+
                 }).catch((error) => {
                     this.user.username = '';
                     delete localStorage['username'];
@@ -87,11 +94,20 @@
         methods: {
             logout() {
                 delete localStorage.username;
-                this.$emit('logout');
                 this.$cookies.remove('session');
                 this.$router.push({name:'login'});
+                this.user = {};
             },
         },
+        mounted() {
+            this.$root.$on('onLogin', (user) => {
+                this.user = user;
+            });
+
+            this.$root.$on('onLogout', () => {
+                this.logout();
+            })
+        }
     }
 </script>
 

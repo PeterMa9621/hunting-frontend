@@ -10,12 +10,18 @@ import ProfilePage from "../pages/AccountPage/ProfilePage";
 
 import auth from "../middleware/Auth/auth";
 import log from "../middleware/Auth/log";
+import admin from "../middleware/Auth/admin";
 import EditProfilePage from "../pages/AccountPage/EditProfilePage";
+import NewsDetailPage from "../pages/NewsPage/NewsDetailPage";
+import AddNewsPage from "../pages/NewsPage/AddNewsPage";
+
 
 const routes = [
     { path: '/about', component: AboutPage, name: 'about' },
     { path: '/', component: HomePage, name: 'home' },
     { path: '/news', component: NewsPage, name: 'news' },
+    { path: '/news/add', component: AddNewsPage, name: 'add-news', meta:{ middleware: [admin] } },
+    { path: '/news/:id', component: NewsDetailPage, name: 'news-detail' },
     { path: '/download', component: DownloadPage, name: 'download' },
     { path: '/login', component: LoginPage, name: 'login' },
     { path: '/forgot-password', component: ForgotPasswordPage, name: 'forgot-password' },

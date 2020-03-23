@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <navigation :user="user" @logout="onLogout"></navigation>
+    <navigation></navigation>
 
-    <router-view @login="onLogin"></router-view>
+    <router-view></router-view>
 
     <footer>
       <div class="container">
@@ -22,31 +22,6 @@
     components: {
       Navigation
     },
-    data() {
-      return {
-        user: {
-          username: ''
-        }
-      }
-    },
-    methods: {
-      onLogin() {
-        this.user.username = localStorage['username'];
-      },
-      onLogout() {
-        this.user.username = '';
-      }
-    },
-    mounted() {
-
-    },
-    created() {
-      const username = localStorage['username'];
-      if(username!=null){
-        // Set the username first, then check if it is available
-        this.user.username = localStorage['username'];
-      }
-    }
   }
 </script>
 

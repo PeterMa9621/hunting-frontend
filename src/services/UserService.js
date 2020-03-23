@@ -88,6 +88,10 @@ class UserService {
             });
         });
     }
+
+    static logout(){
+        localStorage.removeItem('username');
+    }
 }
 
 export default UserService;
