@@ -5,7 +5,7 @@
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
         </ol>
-        <div class="carousel-inner">
+        <div class="carousel-inner slide-box">
             <div class="carousel-item active">
                 <img class="d-block w-100" src="https://media.mojang.com/blog-image/2c34ca1217c7d95e76a6f8d646adf9208f78145a/blogmcnet.png" alt="First slide">
             </div>
@@ -34,5 +34,9 @@
 </script>
 
 <style scoped>
-
+    div.slide-box {
+        border-radius:0.4rem;
+        box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+        z-index: 1;
+    }
 </style>
