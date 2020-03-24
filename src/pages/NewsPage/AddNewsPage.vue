@@ -12,7 +12,7 @@
                             </label>
                             <label class="text-left">
                                 Content
-                                <textarea rows="20" class="form-control" v-model="news.content"></textarea>
+                                <textarea rows="20" class="form-control editor-content" v-model="news.content"></textarea>
                             </label>
                             <label class="text-left">
                                 Category
@@ -55,20 +55,32 @@
         methods: {
             addNews() {
                 UserService.checkAuth(this.$cookies.get('session'), localStorage.getItem('username')).then(response => {
-                    NewsService.addNews({
-                        title: this.news.title,
-                        content: this.news.content,
-                        category: this.news.category,
-                        author: response[0].username
-                    }).then(() => {
-                        this.$router.push({name:'news'});
-                    }).catch((error) => {
-                        console.log(error);
-                    });
+                    const user = response[0];
+                    if(user.is_admin===1){
+                        NewsService.addNews({
+                            title: this.news.title,
+                            content: this.news.content,
+                            category: this.news.category,
+                            author: user.username
+                        }).then((response) => {
+                            const insertedId = response.insertId;
+                            this.$router.push({name:'news-detail', params: {id: insertedId.toString()}});
+                        }).catch((error) => {
+                            console.log(error);
+                        });
+                    } else {
+                        this.$router.push({name:'home'});
+                    }
+
                 }).catch((error) => {
                     alert(error);
                 });
-
+            }
+        },
+        created() {
+            if(!this.$store.state.user || this.$store.state.user.is_admin !== 1){
+                this.$router.push({name: 'home'});
+                return;
             }
         }
     }
@@ -81,6 +93,11 @@
         box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.21);
         -webkit-border-radius: 10px 10px 10px 10px;
         border-radius: 10px 10px 10px 10px;
+        overflow: auto;
+    }
+
+    textarea.editor-content {
+        resize: none;
     }
 
     div.markdown {

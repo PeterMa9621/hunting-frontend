@@ -35,7 +35,7 @@
                                                 <h5>Join At</h5>
                                             </div>
                                             <div class="col-6">
-                                                <p class="text-left">{{ user.created_at }}</p>
+                                                <p class="text-left">{{ new Date(user.created_at).toLocaleString() }}</p>
                                             </div>
                                         </div>
                                         <div class="row justify-content-center">
@@ -66,20 +66,19 @@
 
     export default {
         name: "profile-page",
+        computed: {
+            user: function () {
+                return this.$store.state.user;
+            }
+        },
         data() {
             return {
-                user: [],
                 notification: ''
             }
         },
         methods: {
-            getUser() {
-                UserService.checkAuth(this.$cookies.get('session'), localStorage.username).then((response) => {
-                    this.user = response[0];
-                    this.user.created_at = moment(this.user.created_at).format('MM/DD/YYYY hh:mm');
-                }).catch(() => {
-                    this.$router.push('login');
-                });
+            convertTimeFormat() {
+                this.user.created_at = moment(this.user.created_at).format('MM/DD/YYYY hh:mm');
             },
             edit() {
                 UserService.updateUser(this.user.username, { email: this.user.email }).then(() => {
@@ -93,7 +92,8 @@
             }
         },
         created() {
-            this.getUser();
+            this.$store.commit('checkAuth', this.$router);
+            //this.convertTimeFormat();
         }
     }
 </script>

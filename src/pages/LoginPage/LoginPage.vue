@@ -64,9 +64,11 @@
                 console.log('username', this.username);
                 UserService.login(this.username, this.password).then((response) => {
                     const user = response[0];
+
                     // console.log(user);
                     // Set session id into cookies
                     this.$cookies.set('session', user.session, '1d');
+                    this.$store.commit('setUser', user);
                     localStorage['username'] = user.username;
 
                     // Let navigation know the user has login

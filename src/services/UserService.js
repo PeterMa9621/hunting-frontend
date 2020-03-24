@@ -1,4 +1,5 @@
 import axios from 'axios';
+import User from "../model/User";
 
 const url = 'http://127.0.0.1:8000/api/users/';
 
@@ -43,7 +44,11 @@ class UserService {
                 password: password
             }).then((response) => {
                 const data = response.data;
-                resolve(data);
+
+                const users = data.map(user => (new User({
+                    ...user
+                })));
+                resolve(users);
 
                 const endTime = new Date();
                 console.log("Finish login request");

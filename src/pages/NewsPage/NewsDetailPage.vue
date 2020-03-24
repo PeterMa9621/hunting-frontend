@@ -1,17 +1,42 @@
 <template>
     <div>
+        <div class="row justify-content-center" style="color: darkred">
+            {{errMsg}}
+        </div>
         <div class="background-top">
             <div class="row">
                 <div class="col-sm-1"></div>
                 <div class="col-sm-10">
                     <div class="title text-left">
-                        <h1>{{ news.title }}</h1>
-                        <span class="badge badge-primary category">{{ news.category }}</span>
-                        <h4 class="mt-3">Author: {{ news.author }}</h4>
-                        <p class="mt-3">Posted at: {{ news.created_at }}</p>
+                        <div class="row justify-content-between">
+                            <h1>{{ news.title }}</h1>
+                            <div class="dropdown float-right">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                    Operation
+                                </button>
+                                <div class="dropdown-menu">
+                                    <router-link class="dropdown-item dropdown-hover" :to="{name:'edit-news', params: {id: this.$route.params.id}}">
+                                        Edit
+                                    </router-link>
+                                    <div class="dropdown-divider"></div>
+                                    <button class="dropdown-item dropdown-hover" @click="deleteNews">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <span class="badge badge-primary category">{{ news.category }}</span>
+                        </div>
+                        <div class="row">
+                            <h4 class="mt-3">Author: {{ news.author }}</h4>
+                        </div>
+                        <div class="row">
+                            <p class="mt-3">Posted at: {{ news.created_at }}</p>
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm-1"></div>
+                <div class="col-sm-1">
+
+                </div>
             </div>
         </div>
         <div class="content text-left">
@@ -36,9 +61,15 @@
         components: {
             MarkdownItVue
         },
+        computed: {
+            user: function () {
+                return this.$store.state.user;
+            }
+        },
         data() {
             return {
-                news: new News({})
+                news: new News({}),
+                errMsg: ''
             }
         },
         methods: {
@@ -46,9 +77,26 @@
                 NewsService.getNews(id).then((response) => {
                     this.news = response[0];
                 });
+            },
+            deleteNews() {
+                NewsService.deleteNews(this.$route.params.id).then(() => {
+                    this.$router.push({name:'news'});
+                }).catch((error) => {
+                    this.errMsg = 'Error: ' + error;
+                });
+            },
+            /*
+            active(e) {
+                //console.log(e.target);
+                e.target.classList.add("active");
+            },
+            unactive(e) {
+                e.target.classList.remove("active");
             }
+            */
         },
         created() {
+            console.log("Saved User,", this.user.username);
             this.getNews(this.$route.params.id);
         }
     }
@@ -76,4 +124,8 @@
         font-size: 20px;
     }
 
+    .dropdown-hover:hover {
+        background-color: #007bff;
+        color: white;
+    }
 </style>

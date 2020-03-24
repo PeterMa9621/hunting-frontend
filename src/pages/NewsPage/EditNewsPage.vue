@@ -56,17 +56,23 @@
         methods: {
             editNews() {
                 const newsId = this.$route.params.id;
-                UserService.checkAuth(this.$cookies.get('session'), localStorage.getItem('username')).then(() => {
-                    NewsService.updateNews(newsId, {
-                        title: this.news.title,
-                        content: this.news.content,
-                        category: this.news.category
-                    }).then(() => {
-                        this.$router.push({name:'news-detail', params: {id: newsId}});
-                    }).catch((error) => {
-                        alert(error.error);
-                        console.log(error);
-                    });
+                UserService.checkAuth(this.$cookies.get('session'), localStorage.getItem('username')).then((response) => {
+                    const user = response[0];
+                    if(user.is_admin===1){
+                        NewsService.updateNews(newsId, {
+                            title: this.news.title,
+                            content: this.news.content,
+                            category: this.news.category
+                        }).then(() => {
+                            this.$router.push({name:'news-detail', params: {id: newsId}});
+                        }).catch((error) => {
+                            alert(error.error);
+                            console.log(error);
+                        });
+                    } else {
+                        this.$router.push({name:'home'});
+                    }
+
                 }).catch((error) => {
                     alert(error);
                 });
@@ -80,6 +86,10 @@
             }
         },
         created() {
+            if(!this.$store.state.user || this.$store.state.user.is_admin !== 1){
+                this.$router.push({name: 'home'});
+                return;
+            }
             this.getNews(this.$route.params.id);
         }
     }

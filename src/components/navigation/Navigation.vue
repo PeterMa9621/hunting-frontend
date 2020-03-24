@@ -23,28 +23,23 @@
                 </li>
             </ul>
             <ul class="navbar-nav form-inline my-2 my-lg-0">
-                <li v-if="!user.username" class="nav-item">
+                <li v-if="!this.$store.state.user.username" class="nav-item">
                     <router-link class="nav-link" :to="{name:'login'}">Login</router-link>
                 </li>
-                <li v-if="!user.username" class="nav-item">
+                <li v-if="!this.$store.state.user.username" class="nav-item">
                     <router-link class="nav-link" :to="{name:'register'}">Register</router-link>
                 </li>
-                <li v-if="user.username && user.is_admin===1" class="nav-item">
+                <li v-if="this.$store.state.user.username && this.$store.state.user.is_admin===1" class="nav-item">
                     <router-link class="nav-link" :to="{name:'add-news'}">Post News</router-link>
                 </li>
-                <li v-if="user.username" id="profile" class="nav-item dropleft">
+                <li v-if="this.$store.state.user.username" id="profile" class="nav-item dropleft">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{user.username}}
+                        {{this.$store.state.user.username}}
                     </a>
                     <div class="dropdown-menu justify-content-center" aria-labelledby="navbarDropdown">
-                        <div class="row justify-content-center">
-                            <router-link class="btn btn-link" :to="{name:'profile'}">Profile</router-link>
-                        </div>
-
+                        <router-link class="dropdown-item dropdown-hover" :to="{name:'profile'}">Profile</router-link>
                         <div class="dropdown-divider"></div>
-                        <div class="row justify-content-center">
-                            <button class="btn btn-link" @click="logout">Logout</button>
-                        </div>
+                        <button class="dropdown-item dropdown-hover" @click="logout">Logout</button>
                     </div>
                 </li>
             </ul>
@@ -53,64 +48,30 @@
 </template>
 
 <script>
-    import UserService from "../../services/UserService";
 
     export default {
         name: "navigation",
-        data() {
-            return {
-                user: {
-                    username: '',
-                    is_admin: 0
-                }
-            }
-        },
         created() {
-            const sessionId = this.$cookies.get('session');
-            const username = localStorage['username'];
-            // Check if the user have both username and session id
-            if(sessionId!=null && username!=null){
-                this.user.username = username;
-                console.log('Have session:', sessionId, ", username:", username);
-                // Check from server
-                UserService.checkAuth(sessionId, username).then((response) => {
-                    const user = response[0];
-                    console.log('Auth passed!');
-                    localStorage['username'] = user.username;
-                    this.user =  user;
-                }).catch((error) => {
-                    this.user = {};
-                    delete localStorage['username'];
-                    this.$cookies.remove('session');
-                    console.log(error.data)
-                });
-            } else {
-                this.user.username = '';
-                delete localStorage['username'];
-                this.$cookies.remove('session');
-            }
-
+            // When a user open the website, then check auth first
+            this.$store.commit('checkAuth', this.$router);
         },
         methods: {
             logout() {
-                delete localStorage.username;
-                this.$cookies.remove('session');
-                this.$router.push({name:'login'});
-                this.user = {};
+                // When a user wants to logout, then clear data saved on the website
+                this.$store.commit('clearUser', this.$router);
             },
         },
         mounted() {
-            this.$root.$on('onLogin', (user) => {
-                this.user = user;
-            });
-
             this.$root.$on('onLogout', () => {
-                this.logout();
+                this.$store.commit('clearUser', this.$router);
             })
         }
     }
 </script>
 
 <style scoped>
-
+    .dropdown-hover:hover {
+        background-color: #007bff;
+        color: white;
+    }
 </style>

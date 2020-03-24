@@ -11,7 +11,7 @@ class NewsService {
         return new Promise((resolve, reject) => {
             axios.get(newsUrl).then((response) => {
                 const data = response.data;
-                console.log(data);
+                //console.log(data);
                 const news = data.map(news => (new News({
                     ...news,
                     created_at: new Date(news.created_at).toLocaleString(),
@@ -45,6 +45,17 @@ class NewsService {
                 reject(error);
             })
         })
+    }
+
+    static deleteNews(id){
+        return new Promise((resolve, reject) => {
+            axios.delete(url + id).then((response) => {
+                const data = response.data;
+                resolve(data);
+            }).catch((error) => {
+                reject(error);
+            });
+        });
     }
 }
 

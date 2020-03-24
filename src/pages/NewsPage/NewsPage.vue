@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col-lg-3 col-md-1"></div>
                 <div class="col-lg-6 col-md-10">
-                    <news-list-view :news="news" class="news-list-view"  style="z-index: 1"></news-list-view>
+                    <news-list-view class="news-list-view"  style="z-index: 1"></news-list-view>
                 </div>
                 <div class="col-lg-3 col-md-1"></div>
             </div>

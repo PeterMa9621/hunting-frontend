@@ -41,7 +41,7 @@
                                                 <h5>Join At</h5>
                                             </div>
                                             <div class="col-6">
-                                                <p class="text-left">{{ user.created_at }}</p>
+                                                <p class="text-left">{{ new Date(user.created_at).toLocaleString() }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -79,29 +79,24 @@
 </template>
 
 <script>
-    import UserService from "../../services/UserService";
     import moment from "moment";
 
     export default {
         name: "profile-page",
-        data() {
-            return {
-                user: []
+        computed: {
+            user: function () {
+                return this.$store.state.user;
             }
         },
         methods: {
-            getUser() {
-                UserService.checkAuth(this.$cookies.get('session'), localStorage.username).then((response) => {
-                    this.user = response[0];
-                    this.user.created_at = moment(this.user.created_at).format('MM/DD/YYYY hh:mm');
-                }).catch(() => {
-                    this.$root.$emit('onLogout');
-                });
+            convertTimeFormat() {
+                this.user.created_at = moment(this.user.created_at).format('MM/DD/YYYY hh:mm');
             }
         },
         created() {
-            this.getUser();
-        }
+            this.$store.commit('checkAuth', this.$router);
+            //this.convertTimeFormat();
+        },
     }
 </script>
 
