@@ -9,6 +9,10 @@
                         <div class="col-md-4 my-auto">
                             <img :src="require('@/assets/logo.png')" height="100px" width="100px">
                             <p class="text-center">{{ user.username }}</p>
+                            <div v-if="this.$store.state.user.is_admin===1">
+                                <span v-if="user.is_admin===1" class="badge badge-warning">Admin</span>
+                                <span v-else class="badge badge-primary">Player</span>
+                            </div>
                         </div>
                         <div class="col-md-8">
                             <div class="form-group">
@@ -41,7 +45,7 @@
                                                 <h5>Join At</h5>
                                             </div>
                                             <div class="col-6">
-                                                <p class="text-left">{{ new Date(user.created_at).toLocaleString() }}</p>
+                                                <p class="text-left">{{ user.created_at }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -79,23 +83,34 @@
 </template>
 
 <script>
-    import moment from "moment";
+    import UserService from "../../services/UserService";
 
     export default {
         name: "profile-page",
         computed: {
             user: function () {
-                return this.$store.state.user;
+                if(this.$route.params.id===undefined)
+                    return this.$store.state.user;
+                else
+                    return this.otherUser;
             }
         },
-        methods: {
-            convertTimeFormat() {
-                this.user.created_at = moment(this.user.created_at).format('MM/DD/YYYY hh:mm');
+        data() {
+            return {
+                otherUser: {}
             }
         },
         created() {
-            this.$store.commit('checkAuth', this.$router);
-            //this.convertTimeFormat();
+            const id = this.$route.params.id;
+            if (id===undefined) {
+                this.$store.commit('checkAuth', this.$router);
+            } else {
+                UserService.getUser(this.$route.params.id).then((response) => {
+                    this.otherUser = response[0];
+                }).catch((error) => {
+                    console.log(error);
+                });
+            }
         },
     }
 </script>

@@ -76,12 +76,6 @@
                     alert(error);
                 });
             }
-        },
-        created() {
-            if(!this.$store.state.user || this.$store.state.user.is_admin !== 1){
-                this.$router.push({name: 'home'});
-                return;
-            }
         }
     }
 </script>

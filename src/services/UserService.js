@@ -11,7 +11,8 @@ class UserService {
 
                 resolve(data.map(user => ({
                     ...user,
-                    created_at: new Date(user.created_at).toLocaleString()
+                    created_at: new Date(user.created_at).toLocaleString(),
+                    updated_at: new Date(user.updated_at).toLocaleString(),
                 })));
             }).catch(reason => {
                 reject(reason);
@@ -23,11 +24,11 @@ class UserService {
         return new Promise((resolve, reject) => {
             axios.get(url + username).then((response) => {
                 const data = response.data;
-                resolve(data.map(user => ({
+                resolve(data.map(user => (new User({
                     ...user,
                     created_at: new Date(user.created_at).toLocaleString(),
                     updated_at: new Date(user.updated_at).toLocaleString(),
-                })));
+                }))));
             }).catch(reason => {
                 reject(reason);
             });
@@ -46,7 +47,9 @@ class UserService {
                 const data = response.data;
 
                 const users = data.map(user => (new User({
-                    ...user
+                    ...user,
+                    created_at: new Date(user.created_at).toLocaleString(),
+                    updated_at: new Date(user.updated_at).toLocaleString(),
                 })));
                 resolve(users);
 
@@ -65,7 +68,14 @@ class UserService {
                 session: session,
                 username: username
             }).then((response) => {
-                resolve(response.data);
+                const data = response.data;
+
+                const users = data.map(user => (new User({
+                    ...user,
+                    created_at: new Date(user.created_at).toLocaleString(),
+                    updated_at: new Date(user.updated_at).toLocaleString(),
+                })));
+                resolve(users);
             }).catch((error) => {
                 reject(error);
             })

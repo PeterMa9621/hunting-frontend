@@ -15,20 +15,24 @@ import EditProfilePage from "../pages/AccountPage/EditProfilePage";
 import NewsDetailPage from "../pages/NewsPage/NewsDetailPage";
 import AddNewsPage from "../pages/NewsPage/AddNewsPage";
 import EditNewsPage from "../pages/NewsPage/EditNewsPage";
+import AdminPage from "../pages/AdminPage/AdminPage";
+import admin from "../middleware/Auth/admin";
 
 
 const routes = [
-    { path: '/about', component: AboutPage, name: 'about' },
     { path: '/', component: HomePage, name: 'home' },
+    { path: '/about', component: AboutPage, name: 'about' },
+    { path: '/admin', component: AdminPage, name: 'admin', meta:{ middleware: [admin] } },
     { path: '/news', component: NewsPage, name: 'news' },
-    { path: '/news/add', component: AddNewsPage, name: 'add-news' },
-    { path: '/news/:id/edit', component: EditNewsPage, name: 'edit-news' },
+    { path: '/news/add', component: AddNewsPage, name: 'add-news', meta:{ middleware: [admin] } },
+    { path: '/news/:id/edit', component: EditNewsPage, name: 'edit-news', meta:{ middleware: [admin] } },
     { path: '/news/:id', component: NewsDetailPage, name: 'news-detail' },
     { path: '/download', component: DownloadPage, name: 'download' },
     { path: '/login', component: LoginPage, name: 'login' },
     { path: '/forgot-password', component: ForgotPasswordPage, name: 'forgot-password' },
     { path: '/register', component: RegisterPage, name: 'register' },
     { path: '/profile', component: ProfilePage, name: 'profile', meta:{ middleware: [log, auth] } },
+    { path: '/profile/:id', component: ProfilePage, name: 'other-profile' },
     { path: '/profile/edit', component: EditProfilePage, name: 'edit-profile', meta:{ middleware: [log, auth] } },
 ];
 

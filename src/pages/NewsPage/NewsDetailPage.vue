@@ -10,8 +10,8 @@
                     <div class="title text-left">
                         <div class="row justify-content-between">
                             <h1>{{ news.title }}</h1>
-                            <div class="dropdown float-right">
-                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            <div class="dropdown float-right" v-if=" user.is_admin===1 ">
+                                <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown">
                                     Operation
                                 </button>
                                 <div class="dropdown-menu">
@@ -34,9 +34,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-1">
-
-                </div>
+                <div class="col-sm-1"></div>
             </div>
         </div>
         <div class="content text-left">
@@ -96,7 +94,7 @@
             */
         },
         created() {
-            console.log("Saved User,", this.user.username);
+            //console.log("Saved User,", this.user.username);
             this.getNews(this.$route.params.id);
         }
     }

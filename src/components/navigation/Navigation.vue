@@ -23,18 +23,21 @@
                 </li>
             </ul>
             <ul class="navbar-nav form-inline my-2 my-lg-0">
-                <li v-if="!this.$store.state.user.username" class="nav-item">
+                <li v-if="!user.username" class="nav-item">
                     <router-link class="nav-link" :to="{name:'login'}">Login</router-link>
                 </li>
-                <li v-if="!this.$store.state.user.username" class="nav-item">
+                <li v-if="!user.username" class="nav-item">
                     <router-link class="nav-link" :to="{name:'register'}">Register</router-link>
                 </li>
-                <li v-if="this.$store.state.user.username && this.$store.state.user.is_admin===1" class="nav-item">
+                <li v-if="user.username && user.is_admin===1" class="nav-item">
+                    <router-link class="nav-link" :to="{name:'admin'}">Admin Board</router-link>
+                </li>
+                <li v-if="user.username && user.is_admin===1" class="nav-item">
                     <router-link class="nav-link" :to="{name:'add-news'}">Post News</router-link>
                 </li>
-                <li v-if="this.$store.state.user.username" id="profile" class="nav-item dropleft">
+                <li v-if="user.username" id="profile" class="nav-item dropleft">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{this.$store.state.user.username}}
+                        {{user.username}}
                     </a>
                     <div class="dropdown-menu justify-content-center" aria-labelledby="navbarDropdown">
                         <router-link class="dropdown-item dropdown-hover" :to="{name:'profile'}">Profile</router-link>
@@ -51,6 +54,11 @@
 
     export default {
         name: "navigation",
+        computed: {
+            user: function () {
+                return this.$store.state.user;
+            }
+        },
         created() {
             // When a user open the website, then check auth first
             this.$store.commit('checkAuth', this.$router);

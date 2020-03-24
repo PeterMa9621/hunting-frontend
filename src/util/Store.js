@@ -20,7 +20,7 @@ const storeOption = {
             state.user = user;
             console.log(state.user);
         },
-        checkAuth(state, router){
+        checkAuth(state, {router}){
             const sessionId = Util.getCookie('session');
             const username = localStorage['username'];
             // Check if the user have both username and session id
@@ -29,11 +29,8 @@ const storeOption = {
                 //console.log('Have session:', sessionId, ", username:", username);
                 // Check from server
                 UserService.checkAuth(sessionId, username).then((response) => {
-                    const user = response[0];
+                    state.user = response[0];
                     console.log('Auth passed!');
-
-                    state.user =  user;
-                    //this.$store.commit('setUser', user);
                 }).catch((error) => {
                     console.log(error.data);
                     clearAuthData(state, router);
