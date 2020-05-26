@@ -1,7 +1,7 @@
 import axios from 'axios';
 import User from "../model/User";
 
-const url = 'http://35.203.54.101:8000/api/users/';
+const url = 'http://127.0.0.1:8000/api/users/';
 
 class UserService {
     static getUsers(){
