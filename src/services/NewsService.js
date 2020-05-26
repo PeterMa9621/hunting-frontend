@@ -1,7 +1,7 @@
 import axios from 'axios';
 import News from '../model/News'
 
-const url = 'http://localhost:8000/api/news/';
+const url = 'http://35.203.54.101:8000/api/news/';
 
 class NewsService {
     static getNews(id = null){
